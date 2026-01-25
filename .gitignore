@@ -1,0 +1,77 @@
+﻿# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+
+# Virtual Environment
+venv/
+env/
+ENV/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# Jupyter Notebook
+.ipynb_checkpoints
+*.ipynb
+
+# Data files (large files - don't commit to GitHub)
+data/raw/
+data/processed/*.csv
+data/processed/*.pkl
+data/processed/*.h5
+*.csv
+*.pkl
+*.h5
+*.hdf5
+*.feather
+*.parquet
+
+# Plot/Image outputs (can be regenerated)
+*.png
+*.jpg
+*.jpeg
+*.pdf
+*.svg
+
+# OS
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Logs
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+
+# MyPy
+.mypy_cache/
+.dmypy.json
+dmypy.json
