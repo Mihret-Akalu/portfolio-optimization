@@ -1,141 +1,195 @@
 ﻿
-# Portfolio Optimization and Forecasting – TSLA, BND, SPY
+```markdown
+# Portfolio Optimization using Time Series Forecasting
 
-## Project Overview
-This project demonstrates a data-driven approach to **financial market analysis**, **forecasting**, and **portfolio optimization**. Using historical stock and bond data, we generate forecasts for Tesla (TSLA), optimize a portfolio including TSLA, BND, and SPY based on Modern Portfolio Theory, and backtest the strategy against a benchmark portfolio.
+## Overview
 
-The project is divided into five main tasks:
+This project implements a complete financial forecasting and portfolio optimization pipeline using:
 
-1. **Data Preprocessing & EDA** – Cleaning and exploratory analysis of historical market data.
-2. **Forecasting Models** – Building and evaluating models (ARIMA/LSTM) to predict TSLA stock prices.
-3. **Future Market Trends Forecasting** – Generating 6–12 month forecasts with confidence intervals and trend analysis.
-4. **Portfolio Optimization** – Constructing an optimal portfolio using Modern Portfolio Theory.
-5. **Strategy Backtesting** – Simulating portfolio performance and comparing against a benchmark.
+- Time Series Forecasting (ARIMA, LSTM)
+- Modern Portfolio Theory (Efficient Frontier)
+- Portfolio Optimization
+- Strategy Backtesting
+
+The system forecasts Tesla (TSLA) prices and uses forecasts combined with historical data of SPY and BND to construct an optimal portfolio.
 
 ---
 
-## Project Structure
+## Business Objective
+
+Guide Me in Finance (GMF) Investments wants to:
+
+- Forecast asset trends
+- Optimize asset allocation
+- Improve returns while managing risk
+
+This project demonstrates how forecasting models can improve portfolio construction.
+
+---
+
+## Assets Used
+
+| Asset | Ticker | Role |
+|------|--------|------|
+| Tesla | TSLA | High risk / high return |
+| Vanguard Bond ETF | BND | Stability |
+| S&P500 ETF | SPY | Diversification |
+
+---
+
+## Project Architecture
 
 ```
 
 portfolio-optimization/
 │
-├─ notebooks/
-│   ├─ 01_data_preprocessing_eda.ipynb        # Task 1: Data cleaning & EDA
-│   ├─ 02_forecasting_models.ipynb            # Task 2: ARIMA/LSTM models
-│   ├─ 03_forecast_future.ipynb               # Task 3: Future forecast & trend analysis
-│   ├─ 04_portfolio_optimization.ipynb        # Task 4: Portfolio optimization
-│   ├─ 05_backtesting.ipynb                   # Task 5: Backtesting
+├── data/
+│   └── processed/
 │
-├─ data/
-│   ├─ raw/                                   # Raw downloaded CSVs
-│   ├─ processed/                             # Cleaned and processed datasets
+├── models/
 │
-├─ venv/                                      # Python virtual environment
-├─ .gitignore                                 # Git ignore file
-├─ README.md                                  # Project description (this file)
+├── scripts/
+│   ├── run_data_pipeline.py
+│   ├── run_train_models.py
+│   ├── run_forecasting.py
+│   ├── run_optimize_portfolio.py
+│   ├── run_backtest.py
+│
+├── src/
+│
+├── reports/
+│   └── figures/
+│
+└── README.md
 
 ````
 
 ---
 
-## Setup Instructions
+## Pipeline Workflow
 
-1. **Clone the repository:**
+### Step 1: Data Pipeline
+
+Fetch and process financial data.
+
 ```bash
-git clone <your-repo-url>
-cd portfolio-optimization
+python -m scripts.run_data_pipeline
 ````
 
-2. **Create and activate a virtual environment:**
-
-```bash
-python -m venv venv
-
-venv\Scripts\activate
+Output:
 
 ```
-
-3. **Install dependencies:**
-
-```bash
-pip install -r requirements.txt
-```
-
-4. **Run Jupyter notebooks:**
-
-```bash
-jupyter notebook
+data/processed/historical_prices.csv
 ```
 
 ---
 
-## Key Libraries
+### Step 2: Train Models
 
-* `pandas`, `numpy` – Data manipulation and numerical computation
-* `matplotlib`, `seaborn` – Data visualization
-* `statsmodels`, `pmdarima` – Time series modeling (ARIMA)
-* `tensorflow/keras` – Deep learning (LSTM models)
-* `PyPortfolioOpt` – Portfolio optimization (Efficient Frontier, Sharpe ratio)
-* `scikit-learn` – Forecast evaluation metrics
-* `yfinance` – Historical financial data download
+Train:
 
----
+* ARIMA model
+* LSTM model
 
-## Tasks Summary
+```bash
+python -m scripts.run_train_models
+```
 
-### **Task 1: Data Preprocessing & EDA**
+Output:
 
-* Cleaned TSLA, BND, SPY historical data
-* Handled missing values and aligned dates
-* Visualized price trends, daily returns, and correlations
-* Stationarity testing using ADF Test
-
-### **Task 2: Forecasting Models**
-
-* Trained ARIMA and/or LSTM models for TSLA price prediction
-* Evaluated models using MAE, RMSE, and MAPE
-* Visualized forecast vs. actual
-
-### **Task 3: Future Market Trends Forecasting**
-
-* Generated 6–12 month forecasts using the best model
-* Plotted forecasts with 95% confidence intervals
-* Performed trend analysis and assessed market opportunities and risks
-
-### **Task 4: Portfolio Optimization**
-
-* Constructed expected returns vector (forecasted TSLA + historical BND/SPY)
-* Calculated covariance matrix and risk metrics
-* Generated efficient frontier
-* Identified Max Sharpe Ratio and Min Volatility portfolios
-* Recommended optimal portfolio weights
-
-### **Task 5: Strategy Backtesting**
-
-* Backtested strategy using last year of historical data
-* Compared cumulative returns against benchmark portfolio (60% SPY / 40% BND)
-* Calculated key performance metrics (total return, Sharpe ratio, max drawdown)
-* Provided insights on strategy viability and limitations
+```
+models/
+tsla_lstm_model.h5
+```
 
 ---
 
-## Usage
+### Step 3: Forecast Future Prices
 
-1. Start with **Task 1 notebook** to preprocess and visualize data.
-2. Run **Task 2 notebook** to train forecasting models.
-3. Use **Task 3 notebook** for future predictions and trend analysis.
-4. Optimize the portfolio with **Task 4 notebook**.
-5. Backtest the strategy using **Task 5 notebook**.
+```bash
+python -m scripts.run_forecasting
+```
+
+Output:
+
+```
+data/processed/tsla_arima_forecast_with_intervals.csv
+```
 
 ---
 
-## Notes & Recommendations
+### Step 4: Optimize Portfolio
 
-* Always ensure `data/processed/` contains up-to-date cleaned datasets before running forecasting or portfolio optimization.
-* Use consistent date alignment across all assets for accurate covariance and returns calculation.
-* Forecast reliability decreases over longer horizons; always check confidence intervals.
-* The backtest is **historical simulation only**; past performance does not guarantee future results.
+```bash
+python -m scripts.run_optimize_portfolio
+```
 
+Example output:
 
+```
+TSLA: 49.1%
+BND: 30.1%
+SPY: 20.8%
+```
 
+---
+
+### Step 5: Backtest Strategy
+
+```bash
+python -m scripts.run_backtest
+```
+
+---
+
+## Results
+
+Example optimized portfolio:
+
+| Asset | Weight |
+| ----- | ------ |
+| TSLA  | 49.1%  |
+| BND   | 30.1%  |
+| SPY   | 20.8%  |
+
+---
+
+## Technologies Used
+
+* Python
+* pandas
+* numpy
+* matplotlib
+* statsmodels
+* tensorflow / keras
+* PyPortfolioOpt
+
+---
+
+## Key Features
+
+✔ End-to-end pipeline
+✔ Forecasting using ARIMA and LSTM
+✔ Efficient Frontier optimization
+✔ Portfolio backtesting
+✔ Production-ready structure
+
+---
+
+## How to Run Entire Pipeline
+
+```bash
+python -m scripts.run_data_pipeline
+python -m scripts.run_train_models
+python -m scripts.run_forecasting
+python -m scripts.run_optimize_portfolio
+python -m scripts.run_backtest
+```
+
+---
+
+## Author
+
+Mihret Akalu
+
+```

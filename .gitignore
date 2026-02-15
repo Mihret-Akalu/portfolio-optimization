@@ -32,7 +32,8 @@ data/processed/
 *.csv
 *.json
 *.xlsx
-
+models/
+reports/
 # -------------------------
 # IDE / Editor
 # -------------------------
