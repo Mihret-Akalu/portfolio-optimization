@@ -1,7 +1,5 @@
 import pandas as pd
-import numpy as np
-import matplotlib.pyplot as plt
-import os
+from src.backtest import backtest
 
 # --------------------------------------------------
 # Load returns
@@ -13,14 +11,19 @@ returns = pd.read_csv(
 )
 
 # --------------------------------------------------
-# Portfolio and Benchmark weights
+# Load portfolio weights from file (production-safe)
 # --------------------------------------------------
-weights_strategy = {
-    "TSLA": 0.4909838082747182,
-    "SPY": 0.2083481312104325,
-    "BND": 0.3006680605148493
-}
+weights_df = pd.read_csv(
+    "data/processed/portfolio_weights.csv"
+)
 
+weights_strategy = dict(
+    zip(weights_df.Asset, weights_df.Weight)
+)
+
+# --------------------------------------------------
+# Benchmark weights
+# --------------------------------------------------
 weights_benchmark = {
     "TSLA": 0.0,
     "SPY": 0.6,
@@ -28,52 +31,23 @@ weights_benchmark = {
 }
 
 # --------------------------------------------------
-# Simulation function
+# Run backtest using src module
 # --------------------------------------------------
-def simulate_portfolio(returns_df, weights):
-
-    values = pd.Series(index=returns_df.index, dtype=float)
-
-    values.iloc[0] = 1.0
-
-    weight_array = np.array(
-        [weights[asset] for asset in returns_df.columns]
-    )
-
-    for i in range(1, len(returns_df)):
-
-        daily_ret = np.dot(
-            weight_array,
-            returns_df.iloc[i].values
-        )
-
-        values.iloc[i] = values.iloc[i - 1] * (1 + daily_ret)
-
-    return values
-
-
-# --------------------------------------------------
-# Run backtests
-# --------------------------------------------------
-strategy_vals = simulate_portfolio(
-    returns,
-    weights_strategy
-)
-
-benchmark_vals = simulate_portfolio(
-    returns,
-    weights_benchmark
+results = backtest(
+    returns=returns,
+    weights=weights_strategy,
+    benchmark_weights=weights_benchmark,
+    transaction_cost=0.001,
+    save_results=True
 )
 
 # --------------------------------------------------
-# Save cumulative values for dashboard
+# Save combined cumulative file for dashboard
 # --------------------------------------------------
-os.makedirs("data/processed", exist_ok=True)
-
 cumulative_df = pd.DataFrame({
-    "Date": strategy_vals.index,
-    "Strategy": strategy_vals.values,
-    "Benchmark": benchmark_vals.values
+    "Date": results["strategy_cumulative"].index,
+    "Strategy": results["strategy_cumulative"].values,
+    "Benchmark": results["benchmark_cumulative"].values
 })
 
 cumulative_df.to_csv(
@@ -81,78 +55,9 @@ cumulative_df.to_csv(
     index=False
 )
 
-print("Cumulative backtest data saved.")
-
-# --------------------------------------------------
-# Compute performance metrics
-# --------------------------------------------------
-def compute_metrics(values):
-
-    returns = values.pct_change().dropna()
-
-    total_return = values.iloc[-1] - 1
-
-    ann_return = returns.mean() * 252
-
-    ann_vol = returns.std() * np.sqrt(252)
-
-    sharpe = ann_return / ann_vol if ann_vol != 0 else np.nan
-
-    drawdown = (
-        values / values.cummax() - 1
-    ).min()
-
-    return {
-        "Total Return": total_return,
-        "Annualized Return": ann_return,
-        "Annualized Volatility": ann_vol,
-        "Sharpe Ratio": sharpe,
-        "Max Drawdown": drawdown
-    }
-
-
-metrics_strategy = compute_metrics(strategy_vals)
-
-metrics_benchmark = compute_metrics(benchmark_vals)
-
-metrics_df = pd.DataFrame(
-    [metrics_strategy, metrics_benchmark],
-    index=["Strategy", "Benchmark"]
-)
-
-metrics_df.to_csv(
-    "data/processed/backtest_metrics.csv"
-)
-
-print("Performance metrics saved.")
-
-# --------------------------------------------------
-# Plot cumulative returns
-# --------------------------------------------------
-os.makedirs("reports/figures", exist_ok=True)
-
-plt.figure(figsize=(12, 6))
-
-plt.plot(strategy_vals, label="Strategy")
-
-plt.plot(benchmark_vals, label="Benchmark")
-
-plt.xlabel("Date")
-
-plt.ylabel("Portfolio Value")
-
-plt.title("Backtest: Strategy vs Benchmark")
-
-plt.legend()
-
-plt.grid(True)
-
-plt.savefig(
-    "reports/figures/backtest_cumulative.png",
-    dpi=300,
-    bbox_inches="tight"
-)
-
-print("Plot saved.")
-
-plt.show()
+print("Backtest complete.")
+print("Files saved:")
+print("data/processed/backtest_strategy.csv")
+print("data/processed/backtest_benchmark.csv")
+print("data/processed/backtest_cumulative.csv")
+print("reports/figures/backtest_cumulative.png")
