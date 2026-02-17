@@ -33,7 +33,7 @@ data/processed/
 *.json
 *.xlsx
 models/
-reports/
+
 # -------------------------
 # IDE / Editor
 # -------------------------
