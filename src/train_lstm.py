@@ -43,6 +43,11 @@ def build_model():
     return model
 
 
-def save_scaler(scaler):
-
-    joblib.dump(scaler, "models/scaler.pkl")
+def save_model_and_info(model, scaler, window_size, filepath="models/lstm_model"):
+    """Save model and metadata"""
+    model.save(f"{filepath}.h5")
+    joblib.dump(scaler, f"{filepath}_scaler.pkl")
+    
+    # Save metadata
+    info = {'window_size': window_size}
+    joblib.dump(info, f"{filepath}_info.pkl")

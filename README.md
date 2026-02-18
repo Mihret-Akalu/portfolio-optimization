@@ -1,154 +1,69 @@
-﻿
+﻿![CI](https://github.com/Mihret-Akalu/portfolio-optimization/actions/workflows/unittests.yml/badge.svg)
 
-# Portfolio Optimization using Time Series Forecasting
+# AI-Driven Portfolio Optimization with Forecasting, Backtesting, and Explainability
 
-## Overview
-
-This project implements a complete end-to-end financial forecasting and portfolio optimization system using machine learning and quantitative finance techniques.
-
-The system forecasts asset prices using ARIMA and LSTM models, optimizes asset allocation using Modern Portfolio Theory, and evaluates performance through realistic backtesting.
-
-The goal is to demonstrate how predictive modeling can improve portfolio construction, risk management, and investment decision-making.
+Production-grade quantitative finance system that combines machine learning forecasting, portfolio optimization, backtesting, and explainable AI to improve investment decision-making.
 
 ---
 
-## Business Objective
+# Business Problem
 
-Guide Me in Finance (GMF) Investments seeks to improve portfolio performance by integrating predictive analytics into its investment workflow.
+Traditional portfolio construction relies heavily on historical averages, which assume markets behave similarly to the past. This approach fails to adapt to changing market conditions and often results in suboptimal risk-adjusted performance.
 
-Key objectives:
+Guide Me in Finance (GMF) Investments aims to improve portfolio performance by integrating predictive analytics into the investment pipeline.
 
-* Forecast asset price trends using time series models
-* Optimize asset allocation using expected return and risk
-* Improve risk-adjusted performance compared to benchmark portfolios
-* Provide a production-ready, automated investment pipeline
+Key challenges:
 
----
-
-## Assets Used
-
-| Asset                   | Ticker | Role             |
-| ----------------------- | ------ | ---------------- |
-| Tesla                   | TSLA   | Growth asset     |
-| Vanguard Total Bond ETF | BND    | Risk stabilizer  |
-| S&P 500 ETF             | SPY    | Market benchmark |
+• Static allocation ignores forward-looking signals
+• Limited transparency into model decisions
+• Lack of automated, reproducible investment pipeline
+• Poor adaptability to changing market regimes
 
 ---
 
-## System Architecture
+# Solution Overview
 
-```
-portfolio-optimization/
-│
-├── dashboard/
-│   └── app.py
-│
-├── data/
-│   └── processed/
-│
-├── models/
-│
-├── scripts/
-│   ├── run_data_pipeline.py
-│   ├── run_train_models.py
-│   ├── run_forecasting.py
-│   ├── run_optimize_portfolio.py
-│   ├── run_backtest.py
-│   ├── run_forecast_plot.py
-│   ├── run_risk_metrics.py
-│   └── run_plot_portfolio_weights.py
-│   
-│   
-├── src/
-│   ├── data_loader.py
-│   ├── preprocessing.py
-│   ├── arima_forecaster.py
-│   ├── lstm_forecaster.py
-│   ├── portfolio.py
-│   ├── risk_metrics.py
-│   ├── backtest.py
-│   ├── train_arima.py
-│   ├── train_lstm.py
-│   └── evaluate.py
-│
-├── reports/
-│   └── figures/
-│
-├── requirements.txt
-└── README.md
-```
+This project implements an end-to-end AI-powered portfolio optimization system that:
+
+• Forecasts asset prices using ARIMA and LSTM
+• Optimizes allocation using Modern Portfolio Theory
+• Evaluates strategy using realistic backtesting
+• Explains model predictions using SHAP
+• Provides interactive dashboard for decision-making
+• Runs as a fully automated, reproducible pipeline
+
+Pipeline architecture:
+
+Data → Forecasting → Portfolio Optimization → Backtesting → Explainability → Dashboard
 
 ---
 
-## Pipeline Workflow
+# Assets
 
-### Step 1: Data Pipeline
+| Asset                   | Ticker | Role            |
+| ----------------------- | ------ | --------------- |
+| Tesla                   | TSLA   | Growth asset    |
+| Vanguard Total Bond ETF | BND    | Risk stabilizer |
+| S&P 500 ETF             | SPY    | Benchmark       |
 
-Fetch historical financial data and compute returns and risk metrics.
+These assets represent a diversified portfolio across:
 
-```bash
-python -m scripts.run_data_pipeline
-```
-
-Outputs:
-
-```
-data/processed/historical_prices.csv
-data/processed/daily_returns.csv
-data/processed/risk_metrics.csv
-```
+• High growth
+• Market benchmark
+• Risk-reducing fixed income
 
 ---
 
-### Step 2: Train Forecasting Models
+# Key Results
 
-Train ARIMA and LSTM models for Tesla price forecasting.
+Example results from backtesting:
 
-```bash
-python -m scripts.run_train_models
-```
+• Portfolio return improved vs benchmark
+• Sharpe ratio increased
+• Volatility controlled through diversification
+• Optimized allocation improved risk-adjusted performance
 
-Outputs:
-
-```
-models/arima_model.pkl
-models/lstm_model.h5
-```
-
----
-
-### Step 3: Generate Forecasts
-
-Generate future price forecasts with uncertainty intervals.
-
-```bash
-python -m scripts.run_forecasting
-```
-
-Outputs:
-
-```
-data/processed/tsla_arima_forecast_with_intervals.csv
-data/processed/tsla_lstm_forecast_with_intervals.csv
-```
-
----
-
-### Step 4: Portfolio Optimization
-
-Construct optimal portfolio using Efficient Frontier optimization.
-
-```bash
-python -m scripts.run_optimize_portfolio
-```
-
-Outputs:
-
-```
-data/processed/portfolio_weights.csv
-```
-
-Example allocation:
+Example optimized allocation:
 
 | Asset | Weight |
 | ----- | ------ |
@@ -158,148 +73,233 @@ Example allocation:
 
 ---
 
-### Step 5: Backtesting
+# System Architecture
 
-Evaluate performance of optimized portfolio vs benchmark.
+```
+portfolio-optimization/
 
-```bash
+dashboard/          Streamlit dashboard
+data/processed/     Processed datasets
+models/             Saved trained models
+scripts/            Pipeline execution scripts
+src/                Core modular codebase
+reports/figures/    Visualizations and outputs
+tests/              Unit tests
+requirements.txt
+README.md
+```
+
+Core modules:
+
+• data_loader.py → data ingestion
+• preprocessing.py → feature engineering
+• arima_forecaster.py → statistical forecasting
+• lstm_forecaster.py → deep learning forecasting
+• portfolio.py → portfolio optimization
+• backtest.py → strategy evaluation
+• risk_metrics.py → performance analysis
+
+---
+
+# Pipeline Workflow
+
+## Step 1 — Data Pipeline
+
+Fetch and process historical data:
+
+```
+python -m scripts.run_data_pipeline
+```
+
+Outputs:
+
+```
+historical_prices.csv
+daily_returns.csv
+risk_metrics.csv
+```
+
+---
+
+## Step 2 — Train Models
+
+Train ARIMA and LSTM forecasting models:
+
+```
+python -m scripts.run_train_models
+```
+
+Outputs:
+
+```
+arima_model.pkl
+lstm_model.h5
+```
+
+---
+
+## Step 3 — Forecast Prices
+
+Generate future price forecasts:
+
+```
+python -m scripts.run_forecasting
+```
+
+Outputs:
+
+```
+arima_forecast.csv
+lstm_forecast.csv
+```
+
+---
+
+## Step 4 — Portfolio Optimization
+
+Optimize asset allocation using Efficient Frontier:
+
+```
+python -m scripts.run_optimize_portfolio
+```
+
+Output:
+
+```
+portfolio_weights.csv
+```
+
+---
+
+## Step 5 — Backtesting
+
+Evaluate performance vs benchmark:
+
+```
 python -m scripts.run_backtest
 ```
 
 Outputs:
 
 ```
-data/processed/backtest_cumulative.csv
-reports/figures/backtest_cumulative.png
+backtest_strategy.csv
+backtest_benchmark.csv
+backtest_cumulative.csv
 ```
 
 ---
 
-### Step 6: Interactive Dashboard
+## Step 6 — Explainable AI
 
-Launch Streamlit dashboard:
+Generate SHAP explanations:
 
-```bash
+```
+python -m scripts.generate_shap
+```
+
+Provides:
+
+• Feature importance
+• Model transparency
+• Prediction explainability
+
+---
+
+## Step 7 — Interactive Dashboard
+
+Launch dashboard:
+
+```
 streamlit run dashboard/app.py
 ```
 
-Displays:
+Features:
 
-* Portfolio allocation
-* Forecast results
-* Backtest performance
-* Risk metrics
+• Portfolio allocation visualization
+• Forecast visualization
+• Backtest performance
+• Risk metrics
+• Explainability insights
 
 ---
-## Step 7: Explainable AI (SHAP)
 
-SHAP provides transparency into model predictions.
+# Example Outputs
 
-Benefits:
-
-• Explains which features influence predictions  
-• Improves model transparency  
-• Meets financial industry explainability requirements  
-
-Generate SHAP:
-
-```bash
-python scripts/generate_shap.py
-
-## Results
-
-### Dashboard
+## Dashboard
 
 ![Dashboard](reports/figures/dashboard.png)
 
----
-
-### Backtest Performance
+## Backtest
 
 ![Backtest](reports/figures/backtest_cumulative.png)
 
----
-
-### Forecast Example
+## Forecast
 
 ![Forecast](reports/figures/tsla_arima_forecast.png)
 
----
-
-### Portfolio Allocation
+## Portfolio Allocation
 
 ![Weights](reports/figures/portfolio_allocation.png)
 
----
+## Explainability
 
-### Explainable AI (SHAP)
-
-![SHAP Summary](reports/figures/shap_summary.png)
-
----
-## Performance Metrics
-
-Example strategy performance:
-
-* Higher return than benchmark portfolio
-* Improved Sharpe ratio
-* Controlled volatility
-* Diversified allocation
+![SHAP](reports/figures/shap_summary.png)
 
 ---
 
-## Technologies Used
+# Technical Stack
 
-* Python
-* pandas
-* numpy
-* matplotlib
-* statsmodels
-* tensorflow / keras
-* PyPortfolioOpt
-* Streamlit
+Machine Learning
+• TensorFlow / Keras
+• ARIMA (statsmodels)
+• LSTM Neural Networks
+
+Quantitative Finance
+• PyPortfolioOpt
+• Modern Portfolio Theory
+
+Data Engineering
+• pandas
+• numpy
+
+Visualization
+• matplotlib
+• Streamlit
+
+Explainability
+• SHAP
+
+DevOps
+• GitHub Actions CI/CD
+• pytest
 
 ---
 
-## Key Features
-
-* End-to-end automated pipeline
-* Machine learning forecasting (ARIMA, LSTM)
-* Portfolio optimization using Efficient Frontier
-* Risk metrics and performance evaluation
-* Strategy backtesting vs benchmark
-* Interactive dashboard visualization
-* Modular production-ready architecture
-
----
-
-## Installation
+# Reproducibility
 
 Clone repository:
 
-```bash
+```
 git clone https://github.com/Mihret-Akalu/portfolio-optimization.git
 cd portfolio-optimization
 ```
 
-Create virtual environment:
+Create environment:
 
-```bash
+```
 python -m venv venv
 source venv/bin/activate
 ```
 
 Install dependencies:
 
-```bash
+```
 pip install -r requirements.txt
 ```
 
----
+Run full pipeline:
 
-## How to Run Full Pipeline
-
-```bash
+```
 python -m scripts.run_data_pipeline
 python -m scripts.run_train_models
 python -m scripts.run_forecasting
@@ -307,29 +307,71 @@ python -m scripts.run_optimize_portfolio
 python -m scripts.run_backtest
 ```
 
----
+Launch dashboard:
 
-## Project Highlights
-
-This project demonstrates:
-
-* Time series forecasting
-* Machine learning in finance
-* Portfolio optimization
-* Risk modeling
-* Backtesting methodology
-* Production-level project structure
+```
+streamlit run dashboard/app.py
+```
 
 ---
 
-## Author
+# Testing and CI/CD
+
+Unit tests implemented using pytest.
+
+CI/CD pipeline automatically runs tests on each push via GitHub Actions.
+
+Ensures:
+
+• Code reliability
+• Reproducibility
+• Production readiness
+
+---
+
+# Model Explainability
+
+Explainability provided using SHAP:
+
+Answers critical finance questions:
+
+• Why did the model make this prediction?
+• Which features matter most?
+• Are there hidden risks?
+
+Supports regulatory and financial transparency requirements.
+
+---
+
+# Business Impact
+
+This system enables investment firms to:
+
+• Improve risk-adjusted returns
+• Automate portfolio optimization
+• Increase transparency in investment decisions
+• Reduce reliance on static allocation
+• Deploy production-ready investment pipelines
+
+---
+
+# Future Improvements
+
+• Add more assets
+• Deploy live trading system
+• Add reinforcement learning allocation
+• Integrate real-time data
+• Deploy cloud infrastructure
+
+---
+
+# Author
 
 Mihret Akalu
 
+
 ---
 
-## License
+# License
 
 MIT License
-
----
