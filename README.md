@@ -191,6 +191,20 @@ Displays:
 * Risk metrics
 
 ---
+## Step 7: Explainable AI (SHAP)
+
+SHAP provides transparency into model predictions.
+
+Benefits:
+
+• Explains which features influence predictions  
+• Improves model transparency  
+• Meets financial industry explainability requirements  
+
+Generate SHAP:
+
+```bash
+python scripts/generate_shap.py
 
 ## Results
 
@@ -218,6 +232,11 @@ Displays:
 
 ---
 
+### Explainable AI (SHAP)
+
+![SHAP Summary](reports/figures/shap_summary.png)
+
+---
 ## Performance Metrics
 
 Example strategy performance:

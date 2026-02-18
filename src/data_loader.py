@@ -32,11 +32,11 @@ def download_price_data(tickers, start, end):
 
 def load_data():
 
-    df = pd.read_csv(
-        "data/processed/historical_prices.csv",
-        index_col=0,
-        parse_dates=True
-    )
+    
+    df = pd.read_csv("data/processed/historical_prices.csv", 
+        index_col=0, 
+        parse_dates=True, infer_datetime_format=True)
+    
 
     # Force numeric (CRITICAL FIX)
     df = df.apply(pd.to_numeric, errors="coerce")
